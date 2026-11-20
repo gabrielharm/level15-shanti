@@ -1,0 +1,1 @@
+Copiar hero.png, final-screen.png y music.mp3 en esta misma carpeta y subir todo a GitHub Pages.
