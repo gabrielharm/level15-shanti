@@ -1,1 +1,176 @@
-<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Shantal Brisa Level 15</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700;900&family=Montserrat:wght@300;400;600;700&display=swap" rel="stylesheet"><style>body{margin:0;background:#090b1a;color:#fff;font-family:Montserrat,sans-serif}.hero img,.final img{width:100%;display:block}.section{max-width:1000px;margin:auto;padding:50px 20px;text-align:center}.btn{display:inline-block;padding:14px 22px;border-radius:12px;color:#fff;text-decoration:none;background:#8e44ad;margin:8px}.gift{background:#00a3ff}.teams span{display:inline-block;padding:12px 18px;border-radius:10px;margin:4px;font-weight:bold}.t{background:#b5772e}.a{background:#207dff}.f{background:#d53a3a}</style></head><body><audio id="music" loop><source src="music.mp3" type="audio/mpeg"></audio><div class="section"><h1>SHANTAL BRISA · LEVEL 15</h1><p>Reemplazá hero.png, final-screen.png y music.mp3 por tus archivos.</p><button onclick="document.getElementById('music').play()">🚀 Entrar al Level 15</button></div><section class="hero"><img src="hero.png"></section><section class="section"><h2>Estás invitado</h2><p>A pasar un día familiar y divertido.</p></section><section class="section"><h2>Equipos</h2><div class="teams"><span class="t">TIERRA</span><span class="a">AGUA</span><span class="f">FUEGO</span></div></section><section class="section"><h2>Nos vemos en Jobs</h2><p>Juana Azurduy 2453, Núñez</p><a class="btn" href="https://maps.google.com/?q=Juana+Azurduy+2453+Nuñez+CABA">Ver ubicación</a></section><section class="section"><h2>Regalo</h2><p>Tu presencia es el mejor regalo.</p><a class="btn gift" href="PONER_LINK_MERCADOPAGO">Aportar regalo</a></section><section class="final"><img src="final-screen.png"></section></body></html>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SHANTAL BRISA • LEVEL 15 | Arcade Tournament</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="bg-grid"></div>
+  <div class="bg-glow"></div>
+
+  <button id="music-btn" class="music-btn" aria-label="Reproducir música">
+    <span id="music-icon">🔇</span> <span id="music-text">SOUND OFF</span>
+  </button>
+  <audio id="bg-music" loop>
+    <source src="music.mp3" type="audio/mpeg" />
+  </audio>
+
+  <header class="hero">
+    <div class="badge-top">★ OFFICIAL PLAYER INVITATION ★</div>
+    
+    <div class="crown-icon">👑</div>
+    <h1 class="glitch-title" data-text="SHANTAL BRISA">SHANTAL BRISA</h1>
+    <div class="level-pill">LEVEL 15 • JOBS ARCADE TOURNAMENT</div>
+
+    <p class="subtitle">
+      Preparate para una tarde épica de juegos, desafíos y diversión en familia.
+    </p>
+
+    <div class="countdown" id="countdown">
+      <div class="time-box"><span id="days">00</span><small>DÍAS</small></div>
+      <div class="time-box"><span id="hours">00</span><small>HS</small></div>
+      <div class="time-box"><span id="minutes">00</span><small>MIN</small></div>
+      <div class="time-box"><span id="seconds">00</span><small>SEG</small></div>
+    </div>
+
+    <a href="#mision" class="btn-start" id="enter-btn">
+      <span>▶ PRESS START • ENTRAR AL LEVEL 15</span>
+    </a>
+  </header>
+
+  <main id="mision" class="container">
+    <section class="glass-card">
+      <div class="card-tag">MISSION BRIEFING</div>
+      <h2>¡ESTÁS INVITADO/A!</h2>
+      <p>
+        Vení a celebrar los <strong>15 años de Shantal Brisa</strong> en un torneo arcade único. 
+        Al llegar recibirás tu <strong>Pasaporte Oficial de Jugador/a</strong> para sumar sellos en cada estación.
+      </p>
+
+      <div class="info-grid">
+        <div class="info-item">
+          <span class="info-icon">📅</span>
+          <div>
+            <strong>FECHA</strong>
+            <span>Sábado 29 de Noviembre</span>
+          </div>
+        </div>
+        <div class="info-item">
+          <span class="info-icon">⏰</span>
+          <div>
+            <strong>HORARIO</strong>
+            <span>13:00 a 19:00 hs</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="glass-card">
+      <div class="card-tag">CHOOSE YOUR FACTION</div>
+      <h2>FACCIONES DEL TORNEO</h2>
+      <p class="small-note">Tocá cada elemento para ver su espíritu de juego:</p>
+
+      <div class="teams-grid">
+        <button class="team-card tierra" onclick="selectTeam('Tierra', 'Fuerza, estrategia y resistencia imparable en cada desafío.')">
+          <span class="team-emoji">⛰️</span>
+          <h3>TIERRA</h3>
+          <span class="team-stat">DEF +99</span>
+        </button>
+
+        <button class="team-card agua" onclick="selectTeam('Agua', 'Reflejos rápidos, fluidez y precisión quirúrgica en los juegos.')">
+          <span class="team-emoji">🌊</span>
+          <h3>AGUA</h3>
+          <span class="team-stat">AGI +99</span>
+        </button>
+
+        <button class="team-card fuego" onclick="selectTeam('Fuego', 'Energía pura, velocidad extrema y espíritu competitivo.')">
+          <span class="team-emoji">🔥</span>
+          <h3>FUEGO</h3>
+          <span class="team-stat">ATK +99</span>
+        </button>
+      </div>
+
+      <div id="team-description" class="team-desc">
+        Elegí una facción para inspeccionar sus habilidades.
+      </div>
+    </section>
+
+    <section class="glass-card location-card">
+      <div class="card-tag">STAGE LOCATION</div>
+      <h2>NOS VEMOS EN JOBS</h2>
+      <p class="address">📍 Juana Azurduy 2453, Núñez, CABA</p>
+      
+      <a 
+        href="https://www.google.com/maps/search/?api=1&query=Juana+Azurduy+2453,+Nunez,+Buenos+Aires" 
+        target="_blank" 
+        rel="noopener noreferrer" 
+        class="btn-map"
+      >
+        🗺️ VER UBICACIÓN EN GOOGLE MAPS
+      </a>
+    </section>
+  </main>
+
+  <footer>
+    <p>INSERT COIN TO CONTINUE • SHANTAL BRISA LEVEL 15</p>
+  </footer>
+
+  <script>
+    const musicBtn = document.getElementById('music-btn');
+    const bgMusic = document.getElementById('bg-music');
+    const musicIcon = document.getElementById('music-icon');
+    const musicText = document.getElementById('music-text');
+    const enterBtn = document.getElementById('enter-btn');
+
+    function toggleMusic(forcePlay = false) {
+      if (bgMusic.paused || forcePlay) {
+        bgMusic.play().then(() => {
+          musicIcon.textContent = '🔊';
+          musicText.textContent = 'SOUND ON';
+          musicBtn.classList.add('playing');
+        }).catch(() => {});
+      } else {
+        bgMusic.pause();
+        musicIcon.textContent = '🔇';
+        musicText.textContent = 'SOUND OFF';
+        musicBtn.classList.remove('playing');
+      }
+    }
+
+    musicBtn.addEventListener('click', () => toggleMusic());
+    enterBtn.addEventListener('click', () => toggleMusic(true));
+
+    function selectTeam(name, desc) {
+      const box = document.getElementById('team-description');
+      box.innerHTML = `<strong>EQUIPO ${name.toUpperCase()}:</strong> ${desc}`;
+      box.classList.add('active');
+    }
+
+    const targetDate = new Date('November 29, 2026 13:00:00').getTime();
+    setInterval(() => {
+      const now = new Date().getTime();
+      const diff = targetDate - now;
+
+      if (diff <= 0) {
+        document.getElementById('countdown').innerHTML = '<div class="live-now">¡EL TORNEO YA COMENZÓ!</div>';
+        return;
+      }
+
+      const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      const s = Math.floor((diff % (1000 * 60)) / 1000);
+
+      document.getElementById('days').textContent = String(d).padStart(2, '0');
+      document.getElementById('hours').textContent = String(h).padStart(2, '0');
+      document.getElementById('minutes').textContent = String(m).padStart(2, '0');
+      document.getElementById('seconds').textContent = String(s).padStart(2, '0');
+    }, 1000);
+  </script>
+</body>
+</html>
