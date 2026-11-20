@@ -13,6 +13,7 @@
   <div class="bg-grid"></div>
   <div class="bg-glow"></div>
 
+  <!-- Control de música flotante (opcional si subís music.mp3) -->
   <button id="music-btn" class="music-btn" aria-label="Reproducir música">
     <span id="music-icon">🔇</span> <span id="music-text">SOUND OFF</span>
   </button>
@@ -20,6 +21,7 @@
     <source src="music.mp3" type="audio/mpeg" />
   </audio>
 
+  <!-- PANTALLA 1: PORTADA ARCADE -->
   <header class="hero">
     <div class="badge-top">★ OFFICIAL PLAYER INVITATION ★</div>
     
@@ -28,9 +30,10 @@
     <div class="level-pill">LEVEL 15 • JOBS ARCADE TOURNAMENT</div>
 
     <p class="subtitle">
-      Preparate para una tarde épica con comida rica, juegos, desafíos y diversión en familia.
+      Preparate para una tarde épica de juegos, desafíos y diversión en familia.
     </p>
 
+    <!-- Cuenta regresiva -->
     <div class="countdown" id="countdown">
       <div class="time-box"><span id="days">00</span><small>DÍAS</small></div>
       <div class="time-box"><span id="hours">00</span><small>HS</small></div>
@@ -43,7 +46,10 @@
     </a>
   </header>
 
+  <!-- PANTALLA 2: DETALLES, EQUIPOS, UBICACIÓN Y MINI JUEGO -->
   <main id="mision" class="container">
+    
+    <!-- Tarjeta de Invitación -->
     <section class="glass-card">
       <div class="card-tag">MISSION BRIEFING</div>
       <h2>¡ESTÁS INVITADO/A!</h2>
@@ -70,6 +76,7 @@
       </div>
     </section>
 
+    <!-- Selección de Equipos -->
     <section class="glass-card">
       <div class="card-tag">CHOOSE YOUR FACTION</div>
       <h2>FACCIONES DEL TORNEO</h2>
@@ -100,6 +107,7 @@
       </div>
     </section>
 
+    <!-- Ubicación -->
     <section class="glass-card location-card">
       <div class="card-tag">STAGE LOCATION</div>
       <h2>NOS VEMOS EN JOBS</h2>
@@ -114,6 +122,27 @@
         🗺️ VER UBICACIÓN EN GOOGLE MAPS
       </a>
     </section>
+
+    <!-- BONUS STAGE: DINO RUNNER ARCADE -->
+    <section class="glass-card dino-card">
+      <div class="card-tag">BONUS STAGE • WARM-UP</div>
+      <h2>DINO ARCADE RUNNER</h2>
+      <p class="small-note">Tocá la pantalla o presioná <strong>ESPACIO / ↑</strong> para saltar obstáculos.</p>
+
+      <div class="dino-hud">
+        <span>HI <strong id="dino-hi">00000</strong></span>
+        <span>SCORE <strong id="dino-score">00000</strong></span>
+      </div>
+
+      <div class="dino-wrapper" id="dino-wrapper">
+        <canvas id="dino-canvas" width="640" height="200"></canvas>
+        <div class="dino-overlay" id="dino-overlay">
+          <p id="dino-msg">¿LISTO PARA ENTRENAR?</p>
+          <button type="button" class="btn-dino" id="dino-start-btn">▶ JUGAR</button>
+        </div>
+      </div>
+    </section>
+
   </main>
 
   <footer>
@@ -121,6 +150,7 @@
   </footer>
 
   <script>
+    // Música de fondo opcional
     const musicBtn = document.getElementById('music-btn');
     const bgMusic = document.getElementById('bg-music');
     const musicIcon = document.getElementById('music-icon');
@@ -145,12 +175,14 @@
     musicBtn.addEventListener('click', () => toggleMusic());
     enterBtn.addEventListener('click', () => toggleMusic(true));
 
+    // Interacción de equipos
     function selectTeam(name, desc) {
       const box = document.getElementById('team-description');
       box.innerHTML = `<strong>EQUIPO ${name.toUpperCase()}:</strong> ${desc}`;
       box.classList.add('active');
     }
 
+    // Cuenta regresiva al 29 de Noviembre 13:00 hs
     const targetDate = new Date('November 29, 2026 13:00:00').getTime();
     setInterval(() => {
       const now = new Date().getTime();
@@ -171,6 +203,269 @@
       document.getElementById('minutes').textContent = String(m).padStart(2, '0');
       document.getElementById('seconds').textContent = String(s).padStart(2, '0');
     }, 1000);
+
+    // ==========================================
+    // JUEGO DEL DINOSAURIO (ESTILO NEÓN ARCADE)
+    // ==========================================
+    const canvas = document.getElementById('dino-canvas');
+    const ctx = canvas.getContext('2d');
+    const overlay = document.getElementById('dino-overlay');
+    const msgEl = document.getElementById('dino-msg');
+    const startBtn = document.getElementById('dino-start-btn');
+    const scoreEl = document.getElementById('dino-score');
+    const hiEl = document.getElementById('dino-hi');
+    const wrapper = document.getElementById('dino-wrapper');
+
+    const GROUND_Y = 166;
+    let hiScore = Number(localStorage.getItem('shantal_dino_hi') || 0);
+    hiEl.textContent = String(hiScore).padStart(5, '0');
+
+    let running = false;
+    let gameOver = false;
+    let score = 0;
+    let speed = 5.5;
+    let frame = 0;
+    let obstacles = [];
+    let nextSpawn = 70;
+    let stars = Array.from({ length: 18 }, () => ({
+      x: Math.random() * canvas.width,
+      y: 16 + Math.random() * 100,
+      s: Math.random() > 0.5 ? 2 : 1
+    }));
+
+    const dino = {
+      x: 56,
+      y: GROUND_Y - 38,
+      w: 34,
+      h: 38,
+      vy: 0,
+      gravity: 0.68,
+      jumpPower: -12.2,
+      grounded: true
+    };
+
+    function resetGame() {
+      score = 0;
+      speed = 5.5;
+      frame = 0;
+      obstacles = [];
+      nextSpawn = 65;
+      dino.y = GROUND_Y - dino.h;
+      dino.vy = 0;
+      dino.grounded = true;
+      gameOver = false;
+      running = true;
+      overlay.classList.add('hidden');
+      requestAnimationFrame(loop);
+    }
+
+    function jump() {
+      if (!running) {
+        resetGame();
+        return;
+      }
+      if (dino.grounded) {
+        dino.vy = dino.jumpPower;
+        dino.grounded = false;
+      }
+    }
+
+    function drawDino(x, y, legFrame) {
+      ctx.save();
+      ctx.fillStyle = '#00f0ff';
+      ctx.shadowColor = '#00f0ff';
+      ctx.shadowBlur = 10;
+
+      // Cabeza y hocico pixel
+      ctx.fillRect(x + 14, y, 20, 14);
+      ctx.fillRect(x + 26, y + 6, 8, 5);
+      // Ojo oscuro
+      ctx.fillStyle = '#070812';
+      ctx.fillRect(x + 18, y + 3, 3, 3);
+
+      // Cuello, torso y cola
+      ctx.fillStyle = '#00f0ff';
+      ctx.fillRect(x + 12, y + 14, 12, 16);
+      ctx.fillRect(x + 6, y + 17, 8, 12);
+      ctx.fillRect(x, y + 15, 6, 8);
+      // Bracito
+      ctx.fillRect(x + 24, y + 17, 5, 3);
+
+      // Patas animadas
+      if (!dino.grounded) {
+        ctx.fillRect(x + 10, y + 30, 5, 8);
+        ctx.fillRect(x + 19, y + 30, 5, 8);
+      } else if (legFrame === 0) {
+        ctx.fillRect(x + 10, y + 30, 5, 8);
+        ctx.fillRect(x + 19, y + 30, 5, 4);
+      } else {
+        ctx.fillRect(x + 10, y + 30, 5, 4);
+        ctx.fillRect(x + 19, y + 30, 5, 8);
+      }
+      ctx.restore();
+    }
+
+    function drawCactus(obs) {
+      ctx.save();
+      ctx.fillStyle = '#ff2a85';
+      ctx.shadowColor = '#ff2a85';
+      ctx.shadowBlur = 10;
+
+      const x = obs.x;
+      const y = obs.y;
+      const w = obs.w;
+      const h = obs.h;
+
+      // Tronco principal
+      const trunkW = Math.max(8, Math.floor(w * 0.42));
+      const trunkX = x + Math.floor((w - trunkW) / 2);
+      ctx.fillRect(trunkX, y, trunkW, h);
+
+      // Brazos laterales estilo cactus arcade
+      ctx.fillRect(x, y + Math.floor(h * 0.28), trunkX - x + 2, 5);
+      ctx.fillRect(x, y + Math.floor(h * 0.14), 5, Math.floor(h * 0.18));
+
+      const rightArmX = trunkX + trunkW - 2;
+      ctx.fillRect(rightArmX, y + Math.floor(h * 0.36), x + w - rightArmX, 5);
+      ctx.fillRect(x + w - 5, y + Math.floor(h * 0.2), 5, Math.floor(h * 0.2));
+
+      ctx.restore();
+    }
+
+    function drawScene() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Estrellas de fondo
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.35)';
+      stars.forEach(st => {
+        ctx.fillRect(st.x, st.y, st.s, st.s);
+        if (running) {
+          st.x -= speed * 0.18;
+          if (st.x < 0) st.x = canvas.width;
+        }
+      });
+
+      // Línea de suelo neón
+      ctx.save();
+      ctx.strokeStyle = '#9b5de5';
+      ctx.lineWidth = 2;
+      ctx.shadowColor = '#9b5de5';
+      ctx.shadowBlur = 8;
+      ctx.beginPath();
+      ctx.moveTo(0, GROUND_Y);
+      ctx.lineTo(canvas.width, GROUND_Y);
+      ctx.stroke();
+      ctx.restore();
+
+      // Marcas del suelo en movimiento
+      ctx.fillStyle = 'rgba(0, 240, 255, 0.35)';
+      const offset = (frame * speed) % 48;
+      for (let gx = -offset; gx < canvas.width; gx += 48) {
+        ctx.fillRect(gx, GROUND_Y + 7, 16, 2);
+        ctx.fillRect(gx + 26, GROUND_Y + 14, 8, 2);
+      }
+
+      // Dibujar dinosaurio y obstáculos
+      const legFrame = Math.floor(frame / 6) % 2;
+      drawDino(dino.x, dino.y, legFrame);
+      obstacles.forEach(drawCactus);
+    }
+
+    function loop() {
+      if (!running) return;
+      frame++;
+
+      // Física del salto
+      dino.vy += dino.gravity;
+      dino.y += dino.vy;
+      if (dino.y >= GROUND_Y - dino.h) {
+        dino.y = GROUND_Y - dino.h;
+        dino.vy = 0;
+        dino.grounded = true;
+      }
+
+      // Generación de obstáculos
+      nextSpawn--;
+      if (nextSpawn <= 0) {
+        const tall = Math.random() > 0.45;
+        const h = tall ? 38 : 26;
+        const w = tall ? 22 : 28;
+        obstacles.push({
+          x: canvas.width + 10,
+          y: GROUND_Y - h,
+          w,
+          h
+        });
+        nextSpawn = Math.floor(58 + Math.random() * 55 - Math.min(22, speed * 1.6));
+      }
+
+      // Mover obstáculos y chequear colisiones
+      for (let i = obstacles.length - 1; i >= 0; i--) {
+        const obs = obstacles[i];
+        obs.x -= speed;
+
+        // Hitbox con margen amigable
+        const pad = 5;
+        if (
+          dino.x + pad < obs.x + obs.w - pad &&
+          dino.x + dino.w - pad > obs.x + pad &&
+          dino.y + pad < obs.y + obs.h - pad &&
+          dino.y + dino.h - pad > obs.y + pad
+        ) {
+          running = false;
+          gameOver = true;
+          const finalScore = Math.floor(score);
+          if (finalScore > hiScore) {
+            hiScore = finalScore;
+            localStorage.setItem('shantal_dino_hi', hiScore);
+            hiEl.textContent = String(hiScore).padStart(5, '0');
+          }
+          msgEl.textContent = `GAME OVER • ${finalScore} PTS`;
+          startBtn.textContent = '↻ REINTENTAR';
+          overlay.classList.remove('hidden');
+          drawScene();
+          return;
+        }
+
+        if (obs.x + obs.w < 0) {
+          obstacles.splice(i, 1);
+        }
+      }
+
+      // Puntaje y dificultad progresiva
+      score += 0.22;
+      speed = Math.min(11.5, 5.5 + score * 0.004);
+      scoreEl.textContent = String(Math.floor(score)).padStart(5, '0');
+
+      drawScene();
+      requestAnimationFrame(loop);
+    }
+
+    // Controles táctiles y teclado
+    startBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      resetGame();
+    });
+
+    wrapper.addEventListener('pointerdown', (e) => {
+      if (e.target === startBtn) return;
+      e.preventDefault();
+      jump();
+    });
+
+    window.addEventListener('keydown', (e) => {
+      if (e.code === 'Space' || e.code === 'ArrowUp') {
+        const rect = wrapper.getBoundingClientRect();
+        const inView = rect.top < window.innerHeight && rect.bottom > 0;
+        if (inView || running) {
+          e.preventDefault();
+          jump();
+        }
+      }
+    });
+
+    // Dibujo inicial en reposo
+    drawScene();
   </script>
 </body>
 </html>
