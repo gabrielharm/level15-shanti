@@ -234,22 +234,22 @@
     }));
 
     const dino = {
-      x: 56,
+      x: 42,
       y: GROUND_Y - 38,
       w: 34,
       h: 38,
       vy: 0,
-      gravity: 0.68,
-      jumpPower: -12.2,
+      gravity: 0.95,
+      jumpForce: -13.5,
       grounded: true
     };
 
     function resetGame() {
       score = 0;
-      speed = 5.5;
+      speed = 9.5;
       frame = 0;
       obstacles = [];
-      nextSpawn = 65;
+      nextSpawn = 45;
       dino.y = GROUND_Y - dino.h;
       dino.vy = 0;
       dino.grounded = true;
@@ -433,8 +433,8 @@
       }
 
       // Puntaje y dificultad progresiva
-      score += 0.22;
-      speed = Math.min(11.5, 5.5 + score * 0.004);
+      score += 0.35;
+      speed = Math.min(18, 9.5 + score * 0.008);
       scoreEl.textContent = String(Math.floor(score)).padStart(5, '0');
 
       drawScene();
