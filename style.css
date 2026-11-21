@@ -126,7 +126,38 @@ body {
   padding: 8px 20px;
   border-radius: 999px;
   box-shadow: 0 0 20px rgba(0, 240, 255, 0.2);
-  margin-bottom: 22px;
+  margin-bottom: 18px;
+}
+
+/* LOGO JOBS CENTRADO Y EN TAMAÑO COMPACTO */
+.jobs-logo-wrapper {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto 20px;
+}
+
+.jobs-img-logo,
+.jobs-neon-logo {
+  display: block;
+  width: 135px;
+  max-width: 135px;
+  max-height: 90px;
+  height: auto;
+  object-fit: contain;
+  margin: 0 auto;
+  transition: transform 0.25s ease;
+}
+
+.jobs-img-logo {
+  mix-blend-mode: lighten;
+  filter: drop-shadow(0 0 10px rgba(255, 25, 25, 0.45));
+}
+
+.jobs-img-logo:hover,
+.jobs-neon-logo:hover {
+  transform: scale(1.06);
 }
 
 .subtitle {
@@ -379,51 +410,50 @@ body {
   box-shadow: 0 14px 30px rgba(255, 42, 133, 0.65);
 }
 
-/* JUEGO DEL DINOSAURIO */
+/* DINO RUNNER GAME */
+.dino-wrapper {
+  position: relative;
+  margin-top: 18px;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid rgba(0, 240, 255, 0.3);
+  background: rgba(5, 7, 18, 0.9);
+  box-shadow: inset 0 0 25px rgba(0, 240, 255, 0.08);
+  user-select: none;
+  -webkit-user-select: none;
+}
+
 .dino-hud {
   display: flex;
   justify-content: space-between;
+  padding: 12px 18px 0;
   font-family: 'Press Start 2P', monospace;
-  font-size: 0.68rem;
-  color: var(--text-muted);
-  margin-bottom: 10px;
-  padding: 0 4px;
+  font-size: 0.65rem;
+  color: var(--cyan);
 }
 
-.dino-hud strong {
+.dino-hud #dino-hi {
   color: var(--gold);
-}
-
-.dino-wrapper {
-  position: relative;
-  width: 100%;
-  background: rgba(5, 6, 15, 0.9);
-  border: 1px solid rgba(0, 240, 255, 0.35);
-  border-radius: 16px;
-  overflow: hidden;
-  box-shadow: inset 0 0 25px rgba(0, 240, 255, 0.08);
-  touch-action: manipulation;
-  user-select: none;
-  cursor: pointer;
 }
 
 #dino-canvas {
   display: block;
   width: 100%;
   height: auto;
+  cursor: pointer;
 }
 
 .dino-overlay {
   position: absolute;
   inset: 0;
-  background: rgba(7, 8, 18, 0.78);
-  backdrop-filter: blur(4px);
+  background: rgba(7, 8, 18, 0.72);
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
-  gap: 14px;
-  padding: 16px;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  backdrop-filter: blur(3px);
 }
 
 .dino-overlay.hidden {
@@ -432,26 +462,14 @@ body {
 
 .dino-overlay p {
   font-family: 'Press Start 2P', monospace;
-  font-size: 0.75rem;
+  font-size: 0.85rem;
   color: #fff;
   text-shadow: 0 0 10px var(--cyan);
 }
 
-.btn-dino {
-  font-family: 'Press Start 2P', monospace;
-  font-size: 0.72rem;
-  color: #070812;
-  background: linear-gradient(90deg, var(--gold), #ff9f1c);
-  border: none;
-  border-radius: 10px;
-  padding: 12px 22px;
-  cursor: pointer;
-  box-shadow: 0 0 18px rgba(255, 209, 102, 0.5);
-  transition: transform 0.15s ease;
-}
-
-.btn-dino:hover {
-  transform: scale(1.05);
+.dino-overlay small {
+  color: var(--gold);
+  font-size: 0.85rem;
 }
 
 footer {
@@ -474,5 +492,11 @@ footer {
   .time-box {
     min-width: 64px;
     padding: 12px 10px;
+  }
+  .jobs-img-logo,
+  .jobs-neon-logo {
+    width: 115px;
+    max-width: 115px;
+    max-height: 75px;
   }
 }
