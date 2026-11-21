@@ -248,7 +248,7 @@
 
     function resetGame() {
       score = 0;
-      speed = 9.5;
+      speed = 5.5;
       frame = 0;
       obstacles = [];
       nextSpawn = 45;
@@ -258,8 +258,13 @@
       gameOver = false;
       running = true;
       overlay.classList.add('hidden');
-      requestAnimationFrame(loop);
+       // Evita lanzar dos loops simultáneos si ya estaba corriendo
+      if (!running) {
+        running = true;
+        requestAnimationFrame(loop);
+      }
     }
+  
 
     function jump() {
       if (!running) {
@@ -267,7 +272,7 @@
         return;
       }
       if (dino.grounded) {
-        dino.vy = dino.jumpPower;
+        dino.vy = dino.jumpForce;
         dino.grounded = false;
       }
     }
@@ -398,7 +403,7 @@
           w,
           h
         });
-        nextSpawn = Math.floor(58 + Math.random() * 55 - Math.min(22, speed * 1.6));
+      nextSpawn = Math.floor(58 + Math.random() * 55 - Math.min(22, speed * 1.6));
       }
 
       // Mover obstáculos y chequear colisiones
@@ -436,7 +441,7 @@
 
       // Puntaje y dificultad progresiva
       score += 0.35;
-      speed = Math.min(18, 9.5 + score * 0.008);
+      speed = Math.min(18, 5.5 + score * 0.008);
       scoreEl.textContent = String(Math.floor(score)).padStart(5, '0');
 
       drawScene();
@@ -446,6 +451,7 @@
     // Controles táctiles y teclado
     startBtn.addEventListener('click', (e) => {
       e.stopPropagation();
+      startBtn.blur(); // Quita el foco del botón para que Space no lo dispare de nuevo
       resetGame();
     });
 
