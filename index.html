@@ -206,7 +206,6 @@
       document.getElementById('seconds').textContent = String(s).padStart(2, '0');
     }, 1000);
 
-    // ==========================================
     // JUEGO DEL DINOSAURIO (ESTILO NEÓN ARCADE)
     // ==========================================
     const canvas = document.getElementById('dino-canvas');
@@ -256,15 +255,13 @@
       dino.vy = 0;
       dino.grounded = true;
       gameOver = false;
-      running = true;
       overlay.classList.add('hidden');
-       // Evita lanzar dos loops simultáneos si ya estaba corriendo
+
       if (!running) {
         running = true;
         requestAnimationFrame(loop);
       }
     }
-  
 
     function jump() {
       if (!running) {
@@ -403,7 +400,7 @@
           w,
           h
         });
-      nextSpawn = Math.floor(58 + Math.random() * 55 - Math.min(22, speed * 1.6));
+        nextSpawn = Math.floor(58 + Math.random() * 55 - Math.min(22, speed * 1.6));
       }
 
       // Mover obstáculos y chequear colisiones
@@ -451,7 +448,7 @@
     // Controles táctiles y teclado
     startBtn.addEventListener('click', (e) => {
       e.stopPropagation();
-      startBtn.blur(); // Quita el foco del botón para que Space no lo dispare de nuevo
+      startBtn.blur();
       resetGame();
     });
 
