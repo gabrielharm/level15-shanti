@@ -147,8 +147,97 @@
 
   </main>
 
-  <footer>
-    <p>INSERT COIN TO CONTINUE • SHANTAL BRISA LEVEL 15</p>
+   <footer>
+    <style>
+      @keyframes coinSpin {
+        0%, 100% { transform: scaleX(1) translateY(0); }
+        50% { transform: scaleX(0.25) translateY(-4px); }
+      }
+      @keyframes fadeInBox {
+        from { opacity: 0; transform: translateY(-6px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+      .arcade-coin {
+        display: inline-block;
+        font-size: 1.45rem;
+        margin-bottom: 6px;
+        animation: coinSpin 1.4s infinite ease-in-out;
+        filter: drop-shadow(0 0 8px #ffd166);
+      }
+      .mp-actions {
+        display: flex;
+        justify-content: center;
+        margin-top: 12px;
+      }
+      .btn-mp-alias {
+        font-family: 'Press Start 2P', monospace;
+        font-size: 0.65rem;
+        padding: 12px 16px;
+        border-radius: 8px;
+        cursor: pointer;
+        background: rgba(0, 240, 255, 0.14);
+        color: #00f0ff;
+        border: 1.5px solid #00f0ff;
+        box-shadow: 0 0 12px rgba(0, 240, 255, 0.3);
+        transition: transform 0.15s ease, box-shadow 0.15s ease;
+      }
+      .btn-mp-alias:hover {
+        background: rgba(0, 240, 255, 0.24);
+        box-shadow: 0 0 16px rgba(0, 240, 255, 0.5);
+      }
+      .btn-mp-alias:active {
+        transform: scale(0.96);
+      }
+      .alias-info-box {
+        display: none;
+        max-width: 440px;
+        margin: 14px auto 0;
+        padding: 12px 14px;
+        border-radius: 10px;
+        background: rgba(155, 93, 229, 0.18);
+        border: 1.5px solid #ff2a85;
+        box-shadow: 0 0 14px rgba(255, 42, 133, 0.28);
+        color: #ffffff;
+        font-size: 0.82rem;
+        line-height: 1.45;
+        animation: fadeInBox 0.25s ease forwards;
+      }
+      .alias-info-box.visible {
+        display: block;
+      }
+      .alias-copied-tag {
+        display: block;
+        color: #00f0ff;
+        font-weight: 700;
+        margin-bottom: 6px;
+      }
+    </style>
+
+    <div class="arcade-coin" aria-hidden="true">🪙</div>
+    <p>INSERT COIN SI QUERÉS OBSEQUIAR DINERO 💸🎮</p>
+
+    <div class="mp-actions">
+      <button type="button" class="btn-mp-alias" onclick="mostrarInfoAlias('BRISA.SHANTAL.RAMOS')">
+        📋 ALIAS: BRISA.SHANTAL.RAMOS
+      </button>
+    </div>
+
+    <div id="alias-info-box" class="alias-info-box" role="status">
+      <span class="alias-copied-tag">✅ ¡ALIAS COPIADO AL PORTAPAPELES!</span>
+      Antes de confirmar la transferencia, asegurate de que la cuenta figure a nombre de:<br>
+      <strong>Brisa Shantal Avalos Ramos</strong><br>
+      <em>Cuenta Naranja X</em>
+    </div>
+
+    <script>
+      function mostrarInfoAlias(alias) {
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(alias).catch(() => {});
+        }
+        const box = document.getElementById('alias-info-box');
+        box.classList.add('visible');
+      }
+    </script>
   </footer>
 
   <script>
